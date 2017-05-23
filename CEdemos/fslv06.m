@@ -1,0 +1,9 @@
+function [fval,fjac] = fslv06(x)
+fval = zeros(2,1);
+fjac = zeros(2,2);
+fval(1)   = -exp(-x(1))+x(2)^2;
+fval(2)   = 2*x(1)*x(2)^2;
+fjac(1,1) = exp(-x(1));
+fjac(1,2) = 2*x(2);
+fjac(2,1) = 2*x(2)^2;
+fjac(2,2) = 2*x(1)*x(2);

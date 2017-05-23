@@ -1,0 +1,264 @@
+NOTES ON CHANGES FROM PREVIOUS VERSIONS
+The current version of the CompEcon Toolbox has been altered extensively to have it conform to the 
+final version of the book:
+  Applied Computational Economics and Finance
+  Mario J. Miranda & Paul L. Fackler
+  2002, MIT Press, Cambridge MA
+  ISBN 0-262-13420-9
+Inevitably, this means that earlier users may find that they need to check the documentation to ensure consistency
+with previous versions. Most of the changes are additions or have occurred in the dynamic model solvers described in 
+chapters 7, 9 and 11.
+
+Changes to the toolbox are also documented at the CompEcon website:
+    www4.ncsu.edu/~pfackler/compecon
+
+Problems with the toolbox should be sent to:
+  paul_fackler@ncsu.edu
+
+Changes since Oct. 2002 are listed below
+Dates refer to when the fix was made - not when it was posted 
+to the web site.
+
+8/30/13 Fixed bug in dprod.c that made the 64 bit version crash.
+
+8/7/12 Added MEX version of KRON to the toolbox and eliminated the use of KRONMEX. An m-file version of KRONMEX still exists for backwards compatability - it simply call KRON.
+
+1/9/11
+Numerous errors fixed and m-files versions provided for most of 
+the MEX functions in the toolbox. All demos now run without MEX files.
+
+7/14/10
+FUNDEF
+Line 58 should read
+f=fieldnames(c);
+
+3/2/06
+DDPSOLVE
+Corrected program so the model definition allows either model.horizon or model.T to specify the time horizon.
+
+2/17/05
+A new ZIP file was put on the web site that correctly updated the toolbox. 
+2/07/05
+QNEWTON
+One of the options (eps0) was used to do two things - it was used in the convergence criteria and was used to determine if the step direction is
+sufficiently uphill. These two functions are at odds with each other and the same values should not have been used. This can cause convergence problems 
+or excessive resetting of the search direction or both. To change this, a new optional variable was created (eps1) to handle the uphill direction
+check. The default values are eps0=1 and eps1=1e-12.
+6/17/04
+ICDFN
+The was a bug in icdfn.c that did not handle values with x<=0 or x>=1 correctly when x is a vector. This is corrected and a new MEX file should be created. Change directories to the cetools directory and type “mex icdfn.c” at the command prompt or run mexall again.
+DDPSIMUL
+Made minor changes to speed up execution slightly and added a warning message if N>model.horizon
+
+
+4/19/04
+GJACOBI
+Method was incorrectly code; the line Q=diag(A); should have been Q=diag(diag(A)); or, better yet, Q = sparse(1:n,1:n,diag(A),n,n); 
+
+4/13/04
+DPROD
+Fixed the c-code to correctly handle sparse matrices. Somehow the changes of
+10/23/03 did not get made to this function.
+
+4/5/04
+DPCHECK
+Adjusted to ensure that sizes of analytic and numerical derivatives are consistent.
+RUNDEMOS
+Added a clear all command to ensure that default setting are restored.
+All demos run now without errors.
+
+4/1/04
+LINDOP
+The constant of integration was incorrectly computed for the piece-wise linear (“LIN”) family of functions. It is now correctly so the integral is 0 at the left endpoint of the function.
+
+2/26/04
+DEMAPP09
+The x- and y-axis labels were reversed (quantity should be on the x-axis).
+
+2/4/04 
+DDPSIMUL
+In the finite horizon section the line
+    s = n+1-sum(r(:,u)<cumsum(pstar(s,:,t),2),2); 
+should be changed to
+    if t<=N, s = n+1-sum(r(:,u)<cumsum(pstar(s,:,t),2),2); end
+
+
+!!!!THIS IS VERY IMPORTANT!!!!
+10/20/03
+MEX FILES
+A change in the behavior of MATLAB's API functions created bugs in several
+MEX files. Specifically, mxIsDouble used to return false if passed a
+sparse matrix, but beginning with ver 6.5 now returns true. All the MEX files
+(files with extension .c) have been corrected to work with all
+versions of MATLAB (ver 5 or higher). These files should be reinstalled and
+MEXALL should be rerun to ensure the proper behavior of the toolbox.
+For Windows ver 5. users, new DLLs for are provided with the toolbox. 
+All other users MUST run MEXALL.
+
+MEXALL
+The utility to compile all of the toolbox MEX files apparently did not
+run correctly on UNIX machines. The problem seemed to be in the use of
+"?" for directory separators rather than "\". The utility should work on
+both Windows and UNIX machines now. If you have trouble with this function
+please contact me.
+
+
+10/16/03
+FUNBASX
+Changed the handling of "direct" format when evaluated at points
+defined by a cell array. This also affected the operation of
+FUNDEF, which inadvertently used the "direct" format needlessly. This 
+is a technical fix that should speed up operations that used FUNDEF.
+
+FUNBCONV
+Added the ability to convert form "tensor" to "expanded" form. This 
+is a feature that is expected to be used rarely but was added to help
+with the fix to FUNBASX.
+
+DPROD
+Added the ability to handle mixed format matrices (sparse/double and 
+double/sparse) within the C MEX file. Previously mixed formats
+were handled by callbacks to the M file DPRODS. The MEX function both speeds 
+up direct product operations and reduces the memory load of the operator.
+DPROD is a low level utility located in the CETOOLS\PRIVATE directory. 
+The new DPROD makes DPRODS no longer be necessary.
+NOTE: DPROD currently only works for REAL matrices.
+
+10/15/03
+LINDEF
+Corrected a problem that incorrectly set evenly spaced breakpoint indicator
+to 0; this would slow execution of basis computations for piecewise linear
+functions. Also corrected check for even spacing; if
+    all(abs(diff(diff((breaks))))>5e-15*mean(abs(breaks)))
+returns true, the breakpoint sequence is considered to be evenly spaced.
+
+FUNDEFN
+Corrected a problem in appending piecewise linear dimensions to a basis
+definition. FUNDEFN now checks if the optional extra breakpoint
+sequences are evenly spaced and sets the parameters accordingly. The same
+test is used as in LINDEF. Also corrected the documentation, which did not
+describe this feature.
+
+
+8/29/03
+DPSOLVE
+Changed line 236 from
+    nx = length(model.actions);
+to
+    nx =  = size(X,1);
+to allow for multiple discrete control variables.
+
+6/29/03
+FJAC1 and FDJAC1
+Two new functions added that are 1 sided equivalants of FJAC and FDJAC.
+Note that the input syntax of these functions differs from the
+associated FJAC and FDJAC because an additional input variable for
+the function value f(x) can be passed. This is often already known
+so it saves on one function evaluation. Thus a derivative approximation
+can be obtained in half the time it takes for FJAC and FDJAC.
+
+NELDMEAD
+Actually included the new code refered to below (2/22/03); somehow an old
+version snuck back in.
+
+6/23/03
+QNEWTON
+Improved documentation and added a fourth search method allowing the user to
+return a approximation to the inverse Hessian to be used in determining the 
+search direction. The user defined function f must have the following syntax
+  [fx,g,A] = f(x,additional variables)
+and the command
+  optset('qnewton','SearchMeth',4)
+should be executed before qnewton is called.
+
+6/11/03
+Made a number of changes to RESOLVE to make it conform to a paper on the topic.
+This is an alternative rational expectations solver to the one described in
+the text (REMSOLVE). See demre01 and demre02 for demos. Email me for a working
+paper on the solver.
+
+4/22/03
+LUSOLVE
+Corrected the m-file version to make 4th and 5th inputs optional.
+Note that this m-file shoould not be used - the whole point is to
+obtain the speedup of the MEX implementation.
+
+3/11/03
+CTBASEMAKE
+If coefficients are all 0, this now returns a scalar 0 rather than an empty matrix.
+
+LUSOLVE
+Added a new function to perform linear solves using precomputed LU factors.
+Matlab code for the function is:
+  x(colindex)=U\(L\(b(rowindex)))
+A MEX file version is also available that speeds up the operation. Some quick
+speed comparisons indicated 20% speedups.
+
+FINSOLVE
+FINSOLVE now calls LUSOLVE if implicit or CN algorithms are used.
+
+2/22/03
+NELDMEAD
+Altered convergence criteria to help avoid premature termination.
+
+DPROD (in cetools\private)
+Added sparse/sparse computation to MEX file C-code (callbacks to
+MATLAB are still used for mixed full/sparse). The routine is storage
+and timing efficient and should speed up evaluation of spline 
+function and basis evaluations.
+
+1/7/03
+FINSOLVE
+Altered explicit and CN algorithms to perform LU decomposition
+(with minimum degree column permuatation) prior to iteration loop. 
+This avoids the repeated linear solves used in old algorithm. 
+This leads to dramatic speed improvements and makes the methods 
+competitive with the explicit algorithm for multidimensional
+problems (with larger time steps).
+
+Added a new feature: setting model.american to -1 will produce
+early exercise options for the asset seller such as
+callable bonds and early deliver of futures. Buyer early exercise is
+computed as the maximum of the value of waiting and the value of 
+exercising. Seller early exercise is the minumium of the two.
+
+1/25/03
+RSSOLVE
+Corrected documentation and implementation of setable options
+No change in functionality
+
+
+1/12/03
+CHANGES IN DYNAMIC GAME SOLVER AND DEMOS
+Added new feature to GAMESOLVE to allow the initial coefficient matrix 
+to be passed as an empty matrix. GAMESOLVE will compute the initial 
+coefficients using a policy iteration step evaluated at the initial 
+values of the decision variables (x).
+
+Also added a new function, GAMECHECK, that checks whether the analytic 
+derivatives in a model function file match their finite difference
+approximations. This works like DPCHECK.
+
+Altered the 3 game demos to correct errors in the derivatives. 
+In demgame01 the fxx value were incorrect
+In demgame02 the gx and gxx values were incorrect
+In demgame03 the fx and fxx values did not compute cross terms
+
+In demgame01 this leads to faster solution times but does not change
+  the solution.
+In demgame02 the solution is changed (although qualitative results 
+  are similar).
+In demgame03 no changes occur because the cross terms in fx and fxx are
+  never used.
+
+Note the cross terms in fx and fxx lead not be computed (although 
+  gamecheck will produce a warning message).
+The cross terms in gx and gxx, however, are used and must be returned
+  by the model function file.
+
+Also altered demgame02 to utilize better initial values of x and to
+set cinit=[] to force GAMESOLVE to compute initial coefficient values.
+
+1/4/03
+DPCHECK
+Simplified the code by using FJAC instead of FDJAC.

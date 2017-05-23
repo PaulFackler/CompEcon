@@ -1,0 +1,23 @@
+% PSI Calculates the value of the psi (digamma) function
+% The psi (digamma) function is the first derivative of the loggamma function.
+% USAGE
+%    p=psi(x);
+% Accepts positive matrices.
+% Based on formula 6.3.18 with recurrence formula 6.3.5 in Abromowitz and Stegun.
+
+% Copyright (c) 1997-2002, Paul L. Fackler & Mario J. Miranda
+% paul_fackler@ncsu.edu, miranda.4@osu.edu
+
+function p=psi(x)
+x=x+10;
+p=1./(x.*x);
+p=((((((-8.33333333333333333333e-2*p   ...
+        +2.10927960927960927961e-2).*p ...
+        -7.57575757575757575758e-3).*p ...
+        +4.16666666666666666667e-3).*p ...
+        -3.96825396825396825397e-3).*p ...
+        +8.33333333333333333333e-3).*p ...
+        -8.33333333333333333333e-2).*p;
+p=p+log(x)-0.5./x-1./(x-10)-1./(x-9)-1./(x-8)-1./(x-7)-1./(x-6) ...
+                 -1./(x-5)-1./(x-4)-1./(x-3)-1./(x-2)-1./(x-1);
+p(x<=0)=NaN;
