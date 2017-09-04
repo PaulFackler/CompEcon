@@ -54,4 +54,5 @@ if issparse(A)
 else
   ALU=cell(1,3);
   [ALU{:}]=lu(A);
+  ALU{3}=sparse(ALU{3});
 end
