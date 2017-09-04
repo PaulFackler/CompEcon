@@ -20,7 +20,8 @@ if ~isa(ALU,'cell')
   error('ALU must be a cell array: use luget to define ALU')
 end
 m=length(ALU);
-switch m
+if issparse(ALU{1})
+  switch m
       case 2
         x=ALU{2}\(ALU{1}\b);
       case 3
@@ -29,4 +30,33 @@ switch m
         x=ALU{4}*(ALU{2}\(ALU{1}\(ALU{3}*b)));
       otherwise
         error('LU information is not properly specified')
+  end
+else
+  switch m
+      case 2
+        %x=ALU{2}\(ALU{1}\b);
+        opts.LT = true;
+        x=linsolve(ALU{1},b,opts);
+        opts.UT = true;
+        opts.LT = false;
+        x=linsolve(ALU{3},x,opts);
+      case 3
+        %x=ALU{2}\(ALU{1}\(ALU{3}*b));
+        x=ALU{3}*b;
+        opts.LT = true;
+        x=linsolve(ALU{1},x,opts);
+        opts.UT = true;
+        opts.LT = false;
+        x=linsolve(ALU{2},x,opts);
+      case 4
+        %x=ALU{4}*(ALU{2}\(ALU{1}\(ALU{3}*b)));
+        x=ALU{3}*b;
+        opts.LT = true;
+        x=linsolve(ALU{1},x,opts);
+        opts.UT = true;
+        opts.LT = false;
+        x=ALU{4}*linsolve(ALU{2},x,opts);
+      otherwise
+        error('LU information is not properly specified')
+  end
 end
