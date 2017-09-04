@@ -23,10 +23,11 @@ function [x,flag,it] = gjacobi(A,b,x)
 if nargin<3, x=b; end
 maxit = optget('gjacobi','maxit',1000);
 tol   = optget('gjacobi','tol',sqrt(eps));
+flag=0;
 
 n=size(A,1);
 Q = sparse(1:n,1:n,diag(A),n,n);  % Diagonalize the diagonal of A
-for i=1:maxit
+for it=1:maxit
    dx = Q\(b-A*x);
    x = x + dx;
    if norm(dx)<tol, return; end
