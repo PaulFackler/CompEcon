@@ -113,7 +113,7 @@
 %   GRIDMAKE  Forms grid points
 %   INDEX     Converts between single and multiple indices
 %   KERNEL    Computes a kernel estimate of a PDF
-%   LOOKUP    Performs a table lookup
+%   TABLOOKUP Performs a table lookup
 %   MEXALL    Creates MEX files for CompEcon toolbox
 %   MINTERP   Multidimensional interpoation
 %   NODEUNIF  Computes uniform nodes for intervals R^n

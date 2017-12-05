@@ -19,7 +19,8 @@ y = banana(x');
 y = reshape(y,n(1),n(2))';
 conts = -exp(0.25:0.5:20);
 
-figure(1)
+figure(1); clf
+set(gcf,'units','normalized','position',[0.05 0.05 0.85 0.85])
 contour(xcoord{1},xcoord{2},y,conts,'k:')
 xlabel('x_1'),ylabel('x_2')
 title('Nelder-Mead Maximizes the Banana Function')
@@ -46,7 +47,8 @@ optset('neldmead','defaults');
 
 %for i=1:size(M,2),movie(M(:,i),0);end
 
-figure(2)
+figure(2); clf
+set(gcf,'units','normalized','position',[0.05 0.05 0.85 0.85])
 plot(1,1,'o')
 hold on
 plot(xvec(1,:),xvec(2,:))

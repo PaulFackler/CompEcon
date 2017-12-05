@@ -37,7 +37,9 @@ lineoptions.maxsteps=maxsteps;
 for it=1:maxit
    [fval,fjac] = feval(f,x,varargin{:});
    fnorm = norm(fval,inf);
-   if fnorm<tol, return, end
+   if fnorm<tol, 
+     return, 
+   end
    if 0
      [L1,U1] = ilu(fjac);
      [dx,flag,relres,iter]=bicgstab(fjac,-fval,[],[],L1,U1);

@@ -66,7 +66,7 @@ function [B,x]=splibas(breaks,evennum,k,x,order);
 %  j=ind(temp)-(p-1);
 %  ind=temp-(1:m)';
 %  ind(j)=ind(:)+(k-minorder);    % add k-minorder for augmented sequence
-  ind=lookup(augbreaks,x,3);
+  ind=tablookup(augbreaks,x,3);
   
   % Recursively determine the values of a k-order basis matrix.
   % This is placed in an (m x k+1-order) matrix

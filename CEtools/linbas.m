@@ -58,7 +58,7 @@ function [B,x]=linbas(breaks,evennum,x,order)
     ind=fix((x-breaks(1)).*((n-1)./(breaks(end)-breaks(1))))+1;
     ind=min(max(ind,1),n-1)';
   else
-    ind=lookup(breaks,x,3)';
+    ind=tablookup(breaks,x,3)';
   end
 
   z=((x-breaks(ind))./(breaks(ind+1)-breaks(ind)))';

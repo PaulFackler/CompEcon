@@ -37,7 +37,7 @@ if d==1
     scoord=scoord{1};
   end
   if evenspacing, ind=evenlookup(scoord,s);
-  else,           ind=lookup(scoord,s,3);
+  else,           ind=tablookup(scoord,s,3);
   end
   z=scoord(ind);
   xinterp=x(ind,:);
@@ -66,7 +66,7 @@ function B=getbas(scoord,s,evenspacing)
   m=size(s,1);
   n=size(scoord,1);
   if evenspacing, ind=evenlookup(scoord,s);
-  else,           ind=lookup(scoord,s,3);
+  else,           ind=tablookup(scoord,s,3);
   end
   z=(s-scoord(ind))./(scoord(ind+1)-scoord(ind));
   B=sparse([1:m 1:m],[ind ind+1],[(1-z) z],m,n);

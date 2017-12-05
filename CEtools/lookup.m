@@ -1,6 +1,6 @@
-% LOOKUP  Performs a table lookup.
+% TABLOOKUP  Performs a table lookup.
 % USAGE
-%   ind=lookup(tabvals,x,endadj);
+%   ind=tablookup(tabvals,x,endadj);
 % INPUTS
 %   tabvals : a sorted vector of n values
 %   x       : an array of values
@@ -21,7 +21,7 @@
 %
 % With endadj=3 all the indices are between 1 and n-1
 % To find the nearest table value to each x use:
-%   ind = lookup(tabvals,x,3);
+%   ind = tablookup(tabvals,x,3);
 %   ind = ind + (x-tabvals(ind) > tabvals(ind+1)-x);
 %   nearest = tabvals(ind);
 %
@@ -30,7 +30,7 @@
 % Copyright (c) 1997-2000, Paul L. Fackler & Mario J. Miranda
 % paul_fackler@ncsu.edu, miranda.4@osu.edu
 
-function ind=lookup(tabvals,x,endadj);
+function ind=tablookup(tabvals,x,endadj);
  
 global CompEcon_MEXwarned
  

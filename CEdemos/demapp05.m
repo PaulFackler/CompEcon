@@ -10,7 +10,7 @@ close all
 % Set endpoints of interpolation interval
 a = -1;                       % left endpoint
 b =  1;                       % right endpoint
-n =  7;
+n =  25;
 
 % Construct Chebychev, cubic spline, and linear spline projection space
 chebproj = fundefn('cheb',n,a,b);

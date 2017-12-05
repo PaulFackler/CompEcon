@@ -65,7 +65,9 @@ end
 fval = feval(f,x,varargin{:});
 fnorm = norm(fval,inf);
 for it=1:maxit
-   if fnorm<tol, return; end
+   if fnorm<tol 
+     return; 
+   end
    dx = -(fjacinv*fval);
    if any(isnan(dx)|isinf(dx))
      if nargout<3

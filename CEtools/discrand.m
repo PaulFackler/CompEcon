@@ -16,7 +16,7 @@ function d = discrand(m,p)
   c = [0;cumsum(p(:))];
   u=rand(m,1);
   try    % use mex function
-    d = lookup(c,u,3);
+    d = tablookup(c,u,3);
   catch  % use Matlab function
     d=floor(interp1q(c,(1:length(c)+1)',u));
   end

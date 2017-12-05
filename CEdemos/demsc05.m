@@ -65,7 +65,7 @@
 % Plot value functions V(P,Q_k) for several Q_k.
   figure(2)
   Y=linspace(0,hi,101)';
-  ind=lookup(Q,[0;5;10;15;20]);  % interpolate at several values of Q
+  ind=tablookup(Q,[0;5;10;15;20]);  % interpolate at several values of Q
   p1=exp(Y)*Pstar(ind)';
   V1=funeval(c(1:n,ind),cdef,Y);
   v0=funeval(c,cdef,0);
